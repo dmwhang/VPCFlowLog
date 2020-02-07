@@ -1,0 +1,77 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Deploys CloudWatch Rules that publish to SNS Topics when a VPC creation is detected"
+
+Resources:
+  VPCFlowLogTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName:
+        Fn::Join:
+          - ""
+          - - "VPCFlowLogTopic-"
+            - "Ref": "AWS::Region"
+      Subscription:
+          - Endpoint:
+              Fn::Join:
+                - ""
+                - - "arn:aws:lambda:us-east-1:"
+                  - "Ref": "AWS::AccountId"
+                  - ":function:VPCFlowLog-dev-VPCFlowLogEnable"
+            Protocol: "LAMBDA"
+  VPCFlowLogTopicPolicy:
+    Type: 'AWS::SNS::TopicPolicy'
+    Properties:
+      PolicyDocument:
+        Id: Id1
+        Version: '2012-10-17'
+        Statement:
+          - Sid: Sid1
+            Effect: Allow
+            Principal:
+              Service:
+                - 'events.amazonaws.com' # Allow CloudWatch Events
+            Action: 'sns:Publish'
+            Resource: !Ref VPCFlowLogTopic
+          - Sid: Sid2
+            Effect: Allow
+            Principal:
+              AWS: '*'
+            Action:
+              - sns:Publish
+              - sns:Subscribe
+              - sns:Receive
+            Resource: !Ref VPCFlowLogTopic
+      Topics:
+        - !Ref VPCFlowLogTopic
+  VPCFlowLogRule:
+    DependsOn: VPCFlowLogTopic
+    Type: AWS::Events::Rule
+    Properties:
+      Name:
+        Fn::Join:
+          - ""
+          - - "VPCFlowLogRule-"
+            - "Ref": "AWS::Region"
+      Description: "Detects in region vpc creation and alerts the sns topic"
+      EventPattern:
+        detail:
+          eventName:
+            - "CreateVpc"
+      Targets:
+        - Arn:
+            Fn::Join:
+              - ""
+              - - "arn:aws:sns:"
+                - "Ref": "AWS::Region"
+                - ":"
+                - "Ref": "AWS::AccountId"
+                - ":"
+                - !GetAtt VPCFlowLogTopic.TopicName
+          Id: "VPCFlowLogRule"
+          InputTransformer:
+            InputPathsMap:
+              region: $.region
+              vpc_id: $.detail.responseElements.vpc.vpcId
+            InputTemplate: |
+              "<region>,<vpc_id>"

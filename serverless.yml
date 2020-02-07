@@ -1,0 +1,117 @@
+service: VPCFlowLog
+
+provider:
+  name: aws
+  runtime: python3.8
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::ironnet-vpc-flow-log-"
+            - "Ref": "AWS::AccountId"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::ironnet-vpc-flow-log-"
+            - "Ref": "AWS::AccountId"
+            - "/*"
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogDelivery"
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:DeleteLogDelivery"
+        - "logs:DescribeLogGroups"
+        - "logs:DescribeLogStreams"
+        - "logs:PutLogEvents"
+        - "cloudformation:DescribeStacks"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "ec2:CreateFlowLogs"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "iam:GetRole"
+        - "iam:PassRole"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:iam::"
+            - "Ref": "AWS::AccountId"
+            - ":role/ironnet-vpc-flow-logs-role"
+
+functions:
+  VPCFlowLogEnable:
+    handler: handler.vpc_flow_log_enable
+
+resources:
+  Resources:
+    VPCFlowLogBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName:
+          Fn::Join:
+            - ""
+            - - "ironnet-vpc-flow-log-"
+              - "Ref": "AWS::AccountId"
+    VPCFlowLogBucketPolicy:
+      DependsOn: VPCFlowLogBucket
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Fn::Join:
+            - ""
+            - - "ironnet-vpc-flow-log-"
+              - "Ref": "AWS::AccountId"
+        PolicyDocument:
+          Statement:
+            # bucket flow log permission
+            - Sid: "AWSLogDeliveryWrite"
+              Effect: "Allow"
+              Principal:
+                Service: "delivery.logs.amazonaws.com"
+              Action: "s3:PutObject"
+              Resource:
+                Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::ironnet-vpc-flow-log-"
+                    - "Ref": "AWS::AccountId"
+                    - "/AWSLogs/"
+                    - "Ref": "AWS::AccountId"
+                    - "/*"
+              Condition:
+                StringEquals:
+                  "s3:x-amz-acl": "bucket-owner-full-control"
+            - Sid: "AWSLogDeliveryAclCheck"
+              Effect: "Allow"
+              Principal:
+                Service: "delivery.logs.amazonaws.com"
+              Action: "s3:GetBucketAcl"
+              Resource:
+                Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::ironnet-vpc-flow-log-"
+                    - "Ref": "AWS::AccountId"
+
+    VPCFlowLogRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "vpc-flow-logs.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - "arn:aws:iam::aws:policy/AdministratorAccess"
+        RoleName: "ironnet-vpc-flow-logs-role"
