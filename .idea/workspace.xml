@@ -47,18 +47,22 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../VPCFlowLog/VPCFlowLog.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="374">
-              <caret line="22" column="39" lean-forward="true" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+              <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../VPCFlowLog/.gitignore">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -111,6 +115,7 @@
         <option value="$PROJECT_DIR$/../VPCFlowLog/global-stack.yaml" />
         <option value="$PROJECT_DIR$/../VPCFlowLog/README.md" />
         <option value="$PROJECT_DIR$/../VPCFlowLog/VPCFlowLog.sh" />
+        <option value="$PROJECT_DIR$/../VPCFlowLog/.gitignore" />
       </list>
     </option>
   </component>
@@ -308,12 +313,12 @@
       <workItem from="1580225796751" duration="6424000" />
       <workItem from="1580306033860" duration="33720000" />
       <workItem from="1580440696461" duration="42682000" />
-      <workItem from="1580828163880" duration="90019000" />
+      <workItem from="1580828163880" duration="90170000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="172845000" />
+    <option name="totallyTimeSpent" value="172996000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="-193" width="1248" height="1440" extended-state="0" />
@@ -441,9 +446,6 @@
     <entry file="file://$PROJECT_DIR$/../VPCFlowLog/terraform.tfstate">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/../VPCFlowLog/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/../VPCFlowLog/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -455,7 +457,14 @@
     <entry file="file://$PROJECT_DIR$/../VPCFlowLog/VPCFlowLog.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
-          <caret line="22" column="39" lean-forward="true" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../VPCFlowLog/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
         </state>
       </provider>
     </entry>
