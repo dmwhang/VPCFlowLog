@@ -18,7 +18,7 @@
 
 ## Usage
 
-###Configuration
+### Configuration
 
 - Install and initialize npm
 ```
