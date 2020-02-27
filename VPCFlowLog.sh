@@ -43,8 +43,7 @@ case $1 in
         ;;
 esac
 
-available_regions=$(aws ec2 describe-regions --region us-east-1 | grep "RegionName" | tr -d "\" ")
-available_regions=${available_regions//RegionName:/}
+available_regions=$(aws --region us-east-1 ec2 describe-regions | jq -r ".Regions[].RegionName")
 
 for prof in ${accounts}
 do
