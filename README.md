@@ -44,11 +44,11 @@ $ pip install boto3
 
 Run
 
-    ./deploy.sh enable [account id]
+    ./VPCFlowLog.sh [s3/cw/both] [enable/disable] [account ids]
     
 Example:
 
-    ./deploy.sh enable 123456789012
+    ./VPCFlowLog.sh both enable 123456789012
 
 
 ### Deploy with credential file
@@ -56,4 +56,4 @@ Example:
 - if you use sso helper or configure the ~/.aws/credentials file so that the profiles are the account numbers, you can run:
 
 
-    ./deploy.sh
+    ./VPCFlowLog.sh [s3/cw/both] [enable/disable]
