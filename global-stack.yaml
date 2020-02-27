@@ -2,23 +2,90 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: "Deploys CloudWatch Rules that publish to SNS Topics when a VPC creation is detected"
 
+Parameters:
+  S3:
+    Type: String
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'false'
+    Description: "Condition for enabling s3 flow logging"
+  CW:
+    Type: String
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'false'
+    Description: "Condition for enabling cloudwatch flow logging"
+
+Conditions:
+  S3Enable: !Equals
+    - !Ref S3
+    - 'true'
+  CWEnable: !Equals
+    - !Ref CW
+    - 'true'
+
+
 Resources:
   VPCFlowLogTopic:
+    Condition: S3Enable
     Type: AWS::SNS::Topic
     Properties:
       TopicName:
         Fn::Join:
           - ""
-          - - "VPCFlowLogTopic-"
+          - - "S3-VPCFlowLogTopic-"
             - "Ref": "AWS::Region"
       Subscription:
-          - Endpoint:
-              Fn::Join:
-                - ""
-                - - "arn:aws:lambda:us-east-1:"
-                  - "Ref": "AWS::AccountId"
-                  - ":function:VPCFlowLog-dev-VPCFlowLogEnable"
-            Protocol: "LAMBDA"
+        - Endpoint:
+            Fn::Join:
+              - ""
+              - - "arn:aws:lambda:us-east-1:"
+                - "Ref": "AWS::AccountId"
+                - ":function:VPCFlowLog-dev-VPCFlowLogEnableS3"
+          Protocol: "LAMBDA"
+        - Endpoint:
+            Fn::Join:
+              - ""
+              - - "arn:aws:lambda:us-east-1:"
+                - "Ref": "AWS::AccountId"
+                - ":function:VPCFlowLog-dev-VPCFlowLogEnableCW"
+          Protocol: "LAMBDA"
+#  S3VPCFlowLogTopic:
+#    Condition: S3Enable
+#    Type: AWS::SNS::Topic
+#    Properties:
+#      TopicName:
+#        Fn::Join:
+#          - ""
+#          - - "S3-VPCFlowLogTopic-"
+#            - "Ref": "AWS::Region"
+#      Subscription:
+#          - Endpoint:
+#              Fn::Join:
+#                - ""
+#                - - "arn:aws:lambda:us-east-1:"
+#                  - "Ref": "AWS::AccountId"
+#                  - ":function:VPCFlowLog-dev-VPCFlowLogEnableS3"
+#            Protocol: "LAMBDA"
+#  CWVPCFlowLogTopic:
+#    Condition: CWEnable
+#    Type: AWS::SNS::Topic
+#    Properties:
+#      TopicName:
+#        Fn::Join:
+#          - ""
+#          - - "VPCFlowLogTopic-"
+#            - "Ref": "AWS::Region"
+#      Subscription:
+#          - Endpoint:
+#              Fn::Join:
+#                - ""
+#                - - "arn:aws:lambda:us-east-1:"
+#                  - "Ref": "AWS::AccountId"
+#                  - ":function:VPCFlowLog-dev-VPCFlowLogEnableCW"
+#            Protocol: "LAMBDA"
   VPCFlowLogTopicPolicy:
     Type: 'AWS::SNS::TopicPolicy'
     Properties:

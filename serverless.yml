@@ -49,8 +49,10 @@ provider:
             - ":role/ironnet-vpc-flow-logs-role"
 
 functions:
-  VPCFlowLogEnable:
-    handler: handler.vpc_flow_log_enable
+  VPCFlowLogEnableCW:
+    handler: handler.cw_vpc_flow_log_enable
+  VPCFlowLogEnableS3:
+    handler: handler.s3_vpc_flow_log_enable
 
 resources:
   Resources:

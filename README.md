@@ -44,8 +44,16 @@ $ pip install boto3
 
 Run
 
-    ./deploy.sh [account id]
+    ./deploy.sh enable [account id]
     
 Example:
 
-    ./delpoy.sh 123456789012
+    ./deploy.sh enable 123456789012
+
+
+### Deploy with credential file
+
+- if you use sso helper or configure the ~/.aws/credentials file so that the profiles are the account numbers, you can run:
+
+
+    ./deploy.sh
