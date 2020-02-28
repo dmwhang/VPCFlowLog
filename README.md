@@ -23,21 +23,21 @@
 - Install and initialize npm
 ```
 $ npm install
-$ npm init
 ```
-- Install serverless
+
+Install [serverless](https://serverless.com/):
+
+    npm install -g serverless
+
+- Requires python 3.8+ and the aws CLI and boto3
 ```
-$ npm install serverless
-```
-- Install python3 and boto3
-```
-$ brew install python3
 $ pip install boto3
+$ pip install awscli
 ```
 
 ### Setup
 
-- Account executing VPCFlowLog must have administrator access
+- You'll write access to the AWS accounts that you run this against
 - Environment variables are set to the appropriate account and region
 
 ### Deploy
@@ -45,7 +45,7 @@ $ pip install boto3
 Run
 
     ./VPCFlowLog.sh [s3/cw/both] [enable/disable] [account ids]
-    
+
 Example:
 
     ./VPCFlowLog.sh both enable 123456789012
