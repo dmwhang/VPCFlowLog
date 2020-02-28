@@ -1,19 +1,5 @@
 #!/bin/bash
 
-#vpc both enable
-#vpc both enable 123
-#vpc both disable
-#vpc both disable 123
-#vpc cw enable
-#vpc cw enable 123
-#vpc cw disable
-#vpc cw disable 123
-#vpc s3 enable
-#vpc s3 enable 123
-#vpc s3 disable
-#vpc s3 disable 123
-
-
 if [[ $1 != "cw" && $1 != "s3" && $1 != "both" ]]; then
     echo ERROR: 1st argument must either be "cw" or "s3" or "both"
     exit 1
@@ -64,6 +50,13 @@ do
             fi
             if [[ $1 == "s3" || $1 == "both" ]]; then
                 output=$(aws lambda remove-permission \
+                    --region us-east-1 \
+                    --statement-id ${region}-trigger \
+                    --function-name arn:aws:lambda:us-east-1:${prof}:function:VPCFlowLog-dev-VPCFlowLogEnableS3)
+                if [ $? -ne 0 ]; then
+                    echo ${output}
+                fi
+                output=$(aws ec2 delete-flow-logs \
                     --region us-east-1 \
                     --statement-id ${region}-trigger \
                     --function-name arn:aws:lambda:us-east-1:${prof}:function:VPCFlowLog-dev-VPCFlowLogEnableS3)
