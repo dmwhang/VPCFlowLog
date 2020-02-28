@@ -20,16 +20,11 @@
 
 ### Configuration
 
-- Install and initialize npm
-```
-$ npm install
-```
-
 Install [serverless](https://serverless.com/):
-
-    npm install -g serverless
-
-- Requires python 3.8+ and the aws CLI and boto3
+```
+npm install -g serverless
+```
+Requires python 3.8+ and the aws CLI and boto3
 ```
 $ pip install boto3
 $ pip install awscli
@@ -37,23 +32,15 @@ $ pip install awscli
 
 ### Setup
 
-- You'll write access to the AWS accounts that you run this against
-- Environment variables are set to the appropriate account and region
+- You'll need write access to the AWS accounts that you run this against
+- User has set credentials to the account they are running in 
 
 ### Deploy
 
 Run
 
-    ./VPCFlowLog.sh [s3/cw/both] [enable/disable] [account ids]
+    ./VPCFlowLog.sh [s3/cw/both] [enable/disable]
 
 Example:
 
-    ./VPCFlowLog.sh both enable 123456789012
-
-
-### Deploy with credential file
-
-- if you use sso helper or configure the ~/.aws/credentials file so that the profiles are the account numbers, you can run:
-
-
-    ./VPCFlowLog.sh [s3/cw/both] [enable/disable]
+    ./VPCFlowLog.sh both enable 
