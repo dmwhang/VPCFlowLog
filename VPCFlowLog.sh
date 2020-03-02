@@ -153,18 +153,6 @@ for region in ${available_regions}; do
             done
         fi
         if [[ $1 != "s3" ]]; then
-            vpcs=$(aws ec2 describe-vpcs --region ${region} | jq -r ".Vpcs[].VpcId")
-            if [ $? -ne 0 ]; then
-                echo ${vpcs}
-            fi
-            for vpc_id in ${vpcs}; do
-                output=$(aws logs delete-log-group \
-                    --region ${region} \
-                    --log-group-name ironnet-vpc-flow-log-${profile}/${region}/${vpc_id})
-                if [ $? -ne 0 ]; then
-                    echo ${output}
-                fi
-            done
             search=".FlowLogs[] | select(.DeliverLogsPermissionArn == \"arn:aws:iam::${profile}:role/ironnet-vpc-flow-logs-role\")"
             flow_logs=$(aws --region ${region} ec2 describe-flow-logs | \
                 jq "${search}" | \
@@ -176,6 +164,18 @@ for region in ${available_regions}; do
                 output=$(aws ec2 delete-flow-logs \
                     --region ${region} \
                     --flow-log-id ${flow_log_id})
+                if [ $? -ne 0 ]; then
+                    echo ${output}
+                fi
+            done
+            vpcs=$(aws ec2 describe-vpcs --region ${region} | jq -r ".Vpcs[].VpcId")
+            if [ $? -ne 0 ]; then
+                echo ${vpcs}
+            fi
+            for vpc_id in ${vpcs}; do
+                output=$(aws logs delete-log-group \
+                    --region ${region} \
+                    --log-group-name ironnet-vpc-flow-log-${profile}/${region}/${vpc_id})
                 if [ $? -ne 0 ]; then
                     echo ${output}
                 fi
