@@ -20,15 +20,11 @@
 
 ### Configuration
 
-Install [serverless](https://serverless.com/):
+Install appropriate npm packages
 ```
-npm install -g serverless
+$ npm install
 ```
-Requires python 3.8+ and the aws CLI and boto3
-```
-$ pip install boto3
-$ pip install awscli
-```
+Requires the AWS CLI and jq
 
 ### Setup
 
@@ -36,6 +32,16 @@ $ pip install awscli
 - User has set credentials to the account they are running in 
 
 ### Deploy
+
+The first argument declares where to send the flow logs to: 
+- [s3] is for s3 bucket
+- [cw] is for cloudwatch flog logging
+- [both] is for both the above
+
+The second argument declares whether to enable or disable flow logging: 
+- [enable]
+- [disable]
+
 
 Run
 
