@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ $1 != "cw" && $1 != "s3" && $1 != "both" ]]; then
-    echo ERROR: 1st argument must either be "cw" or "s3" or "both"
+if [[ $1 != "cw" && $1 != "s3" && $1 != "all" ]]; then
+    echo ERROR: 1st argument must either be "cw" or "s3" or "all"
     exit 1
 elif [[ $2 != "enable" && $2 != "disable" ]]; then
     echo ERROR: 2nd argument must either be "enable" or "disable"
