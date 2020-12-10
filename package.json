@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/dmwhang/VPCFlowLog#readme",
   "dependencies": {
-    "serverless": "^1.65.0"
+    "serverless": "^1.83.2"
   }
 }
